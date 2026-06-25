@@ -1,6 +1,3 @@
-# ===== ห้าม push เด็ดขาด =====
-wp-config.php
-
 # ===== User uploads (ใหญ่เกิน / ไม่ใช่ code) =====
 wp-content/uploads/
 
