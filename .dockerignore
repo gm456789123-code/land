@@ -1,0 +1,12 @@
+.git
+.gitignore
+.env
+.env.example
+.vscode
+*.log
+wp-config.php
+wp-content/uploads/
+wp-content/cache/
+wp-content/upgrade/
+backup_20260625-175826/
+backup-theme/

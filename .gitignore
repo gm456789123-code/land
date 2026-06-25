@@ -16,6 +16,9 @@ wp-content/object-cache.php
 backup_20260625-175826/
 backup-theme/
 
+# ===== Docker secrets =====
+.env
+
 # ===== OS & editor =====
 .DS_Store
 Thumbs.db
