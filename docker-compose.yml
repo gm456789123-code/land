@@ -5,7 +5,7 @@ services:
     ports:
       - "80:80"
     environment:
-      WORDPRESS_DB_HOST:     db:3306
+      WORDPRESS_DB_HOST:     land_mysql:3306
       WORDPRESS_DB_NAME:     ${DB_NAME:-wordpress}
       WORDPRESS_DB_USER:     ${DB_USER:-wordpress}
       WORDPRESS_DB_PASSWORD: ${DB_PASSWORD:-secret}
@@ -13,13 +13,13 @@ services:
       WORDPRESS_SITE_URL:    ${SITE_URL:-http://localhost}
       WP_DEBUG:              ${WP_DEBUG:-false}
     depends_on:
-      db:
+      land_mysql:
         condition: service_healthy
     volumes:
       - uploads:/var/www/html/wp-content/uploads
     restart: unless-stopped
 
-  db:
+  land_mysql:
     image: mysql:8.0
     environment:
       MYSQL_DATABASE:      ${DB_NAME:-wordpress}
