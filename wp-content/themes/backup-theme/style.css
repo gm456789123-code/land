@@ -1,0 +1,22 @@
+/*
+Theme Name: Backup Theme
+Theme URI: https://taladtdinthai.com
+Author: ตลาดที่ดินไทย
+Description: Landing page theme สำหรับตลาดที่ดินไทย.com — แพลตฟอร์มประกาศที่ดินทั่วประเทศ
+Version: 1.0.0
+Requires at least: 5.8
+Tested up to: 6.5
+License: Proprietary
+Text Domain: backup-theme
+*/
+
+/* ============================================================
+   Custom styles — Tailwind handles the rest via CDN
+   ============================================================ */
+body { font-family: 'Noto Sans Thai', sans-serif; }
+.hero-gradient { background: linear-gradient(90deg, rgba(19,53,122,.55) 0%, rgba(19,53,122,.05) 100%); }
+.stat-gradient { background: linear-gradient(90deg, #13357a 0%, #1d4ed8 55%, #1aa260 100%); }
+.scrollbar-none::-webkit-scrollbar { display: none; }
+.scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+#mobile-menu { display: none; }
+#mobile-menu.open { display: flex; }
