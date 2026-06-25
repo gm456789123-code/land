@@ -1,23 +1,10 @@
-# Backup folders — ไม่ต้อง push
-backup_20260625-175826/
-backup-theme/
-
-# WordPress sensitive config — ห้าม push เด็ดขาด
+# ===== ห้าม push เด็ดขาด =====
 wp-config.php
-wp-config-sample.php
 
-# WordPress core — download ใหม่ได้เสมอ ไม่ต้อง track
-wp-admin/
-wp-includes/
-wp-*.php
-xmlrpc.php
-license.txt
-readme.html
-
-# Uploads (user content — ใหญ่เกินไปสำหรับ git)
+# ===== User uploads (ใหญ่เกิน / ไม่ใช่ code) =====
 wp-content/uploads/
 
-# Plugin cache / generated files
+# ===== Cache & generated =====
 wp-content/cache/
 wp-content/upgrade/
 wp-content/backup-db/
@@ -25,7 +12,11 @@ wp-content/advanced-cache.php
 wp-content/wp-cache-config.php
 wp-content/object-cache.php
 
-# OS & editor
+# ===== Backup folders =====
+backup_20260625-175826/
+backup-theme/
+
+# ===== OS & editor =====
 .DS_Store
 Thumbs.db
 .vscode/
