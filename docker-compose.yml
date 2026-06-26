@@ -40,10 +40,10 @@ services:
     ports:
       - "8080:80"
     environment:
-      PMA_HOST: db
+      PMA_HOST: land_mysql
       PMA_PORT: 3306
     depends_on:
-      - db
+      - land_mysql
     restart: unless-stopped
 
 volumes:
