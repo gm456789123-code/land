@@ -101,33 +101,33 @@
 <?php
 
 function backup_nav_fallback() {
-    $home    = esc_url( home_url( '/' ) );
-    $search  = esc_url( home_url( '/search/' ) );
-    $compare = esc_url( home_url( '/compare/' ) );
-    $latest  = esc_url( home_url( '/latest/' ) );
-
-    if ( is_front_page() ) {
-        echo '<a href="' . $home . '" class="px-4 py-2 rounded-full text-white" style="background:#13357a;">หน้าหลัก</a>';
-    } else {
-        echo '<a href="' . $home . '" class="px-4 py-2 rounded-full text-gray-600 hover:bg-gray-100 transition-colors">หน้าหลัก</a>';
+    $items = [
+        [ 'url' => home_url( '/' ),        'label' => 'หน้าหลัก',     'active' => is_front_page() ],
+        [ 'url' => home_url( '/search/' ),  'label' => 'ค้นหาที่ดิน', 'active' => is_page( 'search' ) ],
+        [ 'url' => home_url( '/compare/' ), 'label' => 'เปรียบเทียบ', 'active' => is_page( 'compare' ) ],
+        [ 'url' => home_url( '/latest/' ),  'label' => 'ดูล่าสุด',    'active' => is_page( 'latest' ) ],
+    ];
+    foreach ( $items as $item ) {
+        $class = $item['active']
+            ? 'px-4 py-2 rounded-full text-white'
+            : 'px-4 py-2 rounded-full text-gray-600 hover:bg-gray-100 transition-colors';
+        $style = $item['active'] ? ' style="background:#13357a;"' : '';
+        echo '<a href="' . esc_url( $item['url'] ) . '" class="' . $class . '"' . $style . '>' . esc_html( $item['label'] ) . '</a>';
     }
-    echo '<a href="' . $search  . '" class="px-4 py-2 rounded-full text-gray-600 hover:bg-gray-100 transition-colors">ค้นหาที่ดิน</a>';
-    echo '<a href="' . $compare . '" class="px-4 py-2 rounded-full text-gray-600 hover:bg-gray-100 transition-colors">เปรียบเทียบ</a>';
-    echo '<a href="' . $latest  . '" class="px-4 py-2 rounded-full text-gray-600 hover:bg-gray-100 transition-colors">ดูล่าสุด</a>';
 }
 
 function backup_mobile_nav_fallback() {
-    $home    = esc_url( home_url( '/' ) );
-    $search  = esc_url( home_url( '/search/' ) );
-    $compare = esc_url( home_url( '/compare/' ) );
-    $latest  = esc_url( home_url( '/latest/' ) );
-
-    if ( is_front_page() ) {
-        echo '<a href="' . $home . '" class="block px-4 py-2 rounded-full text-white text-center mb-1" style="background:#13357a;">หน้าหลัก</a>';
-    } else {
-        echo '<a href="' . $home . '" class="block px-4 py-2 rounded-full text-gray-600 hover:bg-gray-100 transition-colors">หน้าหลัก</a>';
+    $items = [
+        [ 'url' => home_url( '/' ),        'label' => 'หน้าหลัก',     'active' => is_front_page() ],
+        [ 'url' => home_url( '/search/' ),  'label' => 'ค้นหาที่ดิน', 'active' => is_page( 'search' ) ],
+        [ 'url' => home_url( '/compare/' ), 'label' => 'เปรียบเทียบ', 'active' => is_page( 'compare' ) ],
+        [ 'url' => home_url( '/latest/' ),  'label' => 'ดูล่าสุด',    'active' => is_page( 'latest' ) ],
+    ];
+    foreach ( $items as $item ) {
+        $class = $item['active']
+            ? 'block px-4 py-2 rounded-full text-white text-center mb-1'
+            : 'block px-4 py-2 rounded-full text-gray-600 hover:bg-gray-100 transition-colors';
+        $style = $item['active'] ? ' style="background:#13357a;"' : '';
+        echo '<a href="' . esc_url( $item['url'] ) . '" class="' . $class . '"' . $style . '>' . esc_html( $item['label'] ) . '</a>';
     }
-    echo '<a href="' . $search  . '" class="block px-4 py-2 rounded-full text-gray-600 hover:bg-gray-100 transition-colors">ค้นหาที่ดิน</a>';
-    echo '<a href="' . $compare . '" class="block px-4 py-2 rounded-full text-gray-600 hover:bg-gray-100 transition-colors">เปรียบเทียบ</a>';
-    echo '<a href="' . $latest  . '" class="block px-4 py-2 rounded-full text-gray-600 hover:bg-gray-100 transition-colors">ดูล่าสุด</a>';
 }
