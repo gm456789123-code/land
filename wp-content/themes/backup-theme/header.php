@@ -86,7 +86,7 @@
   </div>
 
   <!-- Mobile menu -->
-  <div id="mobile-menu" class="lg:hidden flex-col border-t border-gray-100 bg-white px-4 pb-4 pt-2 text-sm font-semibold gap-1">
+  <div id="mobile-menu" class="hidden flex-col border-t border-gray-100 bg-white px-4 pb-4 pt-2 text-sm font-semibold gap-1">
     <?php
     wp_nav_menu( [
       'theme_location' => 'mobile',

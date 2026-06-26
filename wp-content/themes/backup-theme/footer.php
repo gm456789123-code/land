@@ -48,8 +48,9 @@
   var menu = document.getElementById( 'mobile-menu' );
   if ( btn && menu ) {
     btn.addEventListener( 'click', function () {
-      var open = menu.classList.toggle( 'open' );
-      btn.setAttribute( 'aria-expanded', open ? 'true' : 'false' );
+      var open = menu.classList.toggle( 'hidden' );
+      menu.classList.toggle( 'flex', !open );
+      btn.setAttribute( 'aria-expanded', !open ? 'true' : 'false' );
     } );
   }
 </script>
