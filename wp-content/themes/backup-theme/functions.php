@@ -21,6 +21,13 @@ add_action( 'wp_enqueue_scripts', 'backup_theme_enqueue' );
 
 add_action( 'init', 'backup_register_rewrites' );
 function backup_register_rewrites() {
+    if ( get_option( 'permalink_structure' ) !== '/%postname%/' ) {
+        global $wp_rewrite;
+        $wp_rewrite->set_permalink_structure( '/%postname%/' );
+        $wp_rewrite->flush_rules();
+        delete_option( 'backup_rewrites_flushed' );
+    }
+
     add_rewrite_rule( '^search/?$',  'index.php?backup_route=search',  'top' );
     add_rewrite_rule( '^compare/?$', 'index.php?backup_route=compare', 'top' );
     add_rewrite_rule( '^latest/?$',  'index.php?backup_route=latest',  'top' );
