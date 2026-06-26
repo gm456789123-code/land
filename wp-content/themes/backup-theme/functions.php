@@ -19,6 +19,29 @@ function backup_theme_enqueue() {
 }
 add_action( 'wp_enqueue_scripts', 'backup_theme_enqueue' );
 
+add_action( 'after_switch_theme', 'backup_theme_activate' );
+function backup_theme_activate() {
+    // Permalink
+    global $wp_rewrite;
+    $wp_rewrite->set_permalink_structure( '/%postname%/' );
+    $wp_rewrite->flush_rules();
+
+    // Pages
+    foreach ( [
+        'search'  => 'ค้นหาที่ดิน',
+        'compare' => 'เปรียบเทียบ',
+        'latest'  => 'ดูล่าสุด',
+    ] as $slug => $title ) {
+        if ( ! get_page_by_path( $slug ) ) {
+            wp_insert_post( [
+                'post_title'  => $title,
+                'post_name'   => $slug,
+                'post_status' => 'publish',
+                'post_type'   => 'page',
+            ] );
+        }
+    }
+}
 
 add_action( 'init', 'backup_create_default_menus', 99 );
 function backup_create_default_menus() {
