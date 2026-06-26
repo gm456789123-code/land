@@ -19,6 +19,63 @@ function backup_theme_enqueue() {
 }
 add_action( 'wp_enqueue_scripts', 'backup_theme_enqueue' );
 
+add_action( 'template_redirect', 'backup_handle_routes' );
+function backup_handle_routes() {
+    $routes = [
+        'search'  => '/page-search.php',
+        'compare' => '/page-compare.php',
+        'latest'  => '/page-latest.php',
+    ];
+
+    $slug = trim( parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH ), '/' );
+
+    if ( isset( $routes[ $slug ] ) ) {
+        include get_template_directory() . $routes[ $slug ];
+        exit;
+    }
+}
+
+add_action( 'init', 'backup_create_default_menus', 99 );
+function backup_create_default_menus() {
+    if ( get_option( 'backup_menus_created' ) ) {
+        return;
+    }
+
+    $menu_items = [
+        [ 'title' => 'หน้าหลัก',     'url' => home_url( '/' ) ],
+        [ 'title' => 'ค้นหาที่ดิน', 'url' => home_url( '/search/' ) ],
+        [ 'title' => 'เปรียบเทียบ', 'url' => home_url( '/compare/' ) ],
+        [ 'title' => 'ดูล่าสุด',    'url' => home_url( '/latest/' ) ],
+    ];
+
+    $locations = get_theme_mod( 'nav_menu_locations', [] );
+
+    foreach ( [ 'primary' => 'เมนูหลัก (Desktop)', 'mobile' => 'เมนูมือถือ' ] as $location => $name ) {
+        $existing = wp_get_nav_menu_object( $name );
+        $menu_id  = $existing ? $existing->term_id : wp_create_nav_menu( $name );
+
+        if ( is_wp_error( $menu_id ) ) {
+            continue;
+        }
+
+        if ( ! $existing ) {
+            foreach ( $menu_items as $item ) {
+                wp_update_nav_menu_item( $menu_id, 0, [
+                    'menu-item-title'  => $item['title'],
+                    'menu-item-url'    => $item['url'],
+                    'menu-item-status' => 'publish',
+                    'menu-item-type'   => 'custom',
+                ] );
+            }
+        }
+
+        $locations[ $location ] = $menu_id;
+    }
+
+    set_theme_mod( 'nav_menu_locations', $locations );
+    update_option( 'backup_menus_created', true );
+}
+
 /* ============================================================
    Nav Walker — Desktop
    Outputs <a> tags with Tailwind classes (no <li>/<ul> wrapper)
