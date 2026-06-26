@@ -19,25 +19,6 @@ function backup_theme_enqueue() {
 }
 add_action( 'wp_enqueue_scripts', 'backup_theme_enqueue' );
 
-add_action( 'template_redirect', 'backup_handle_routes', 1 );
-function backup_handle_routes() {
-    $map = [
-        'search'  => 'page-search.php',
-        'compare' => 'page-compare.php',
-        'latest'  => 'page-latest.php',
-    ];
-
-    $path = trim( parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH ), '/' );
-
-    if ( isset( $map[ $path ] ) ) {
-        $file = get_template_directory() . '/' . $map[ $path ];
-        if ( file_exists( $file ) ) {
-            status_header( 200 );
-            include $file;
-            exit;
-        }
-    }
-}
 
 add_action( 'init', 'backup_create_default_menus', 99 );
 function backup_create_default_menus() {
