@@ -19,45 +19,24 @@ function backup_theme_enqueue() {
 }
 add_action( 'wp_enqueue_scripts', 'backup_theme_enqueue' );
 
-add_action( 'init', 'backup_register_rewrites' );
-function backup_register_rewrites() {
-    if ( get_option( 'permalink_structure' ) !== '/%postname%/' ) {
-        global $wp_rewrite;
-        $wp_rewrite->set_permalink_structure( '/%postname%/' );
-        $wp_rewrite->flush_rules();
-        delete_option( 'backup_rewrites_flushed' );
-    }
-
-    add_rewrite_rule( '^search/?$',  'index.php?backup_route=search',  'top' );
-    add_rewrite_rule( '^compare/?$', 'index.php?backup_route=compare', 'top' );
-    add_rewrite_rule( '^latest/?$',  'index.php?backup_route=latest',  'top' );
-
-    if ( get_option( 'backup_rewrites_flushed' ) !== '1' ) {
-        flush_rewrite_rules();
-        update_option( 'backup_rewrites_flushed', '1' );
-    }
-}
-
-add_filter( 'query_vars', function( $vars ) {
-    $vars[] = 'backup_route';
-    return $vars;
-} );
-
-add_filter( 'template_include', 'backup_handle_routes' );
-function backup_handle_routes( $template ) {
-    $route = get_query_var( 'backup_route' );
-    $map   = [
+add_action( 'template_redirect', 'backup_handle_routes', 1 );
+function backup_handle_routes() {
+    $map = [
         'search'  => 'page-search.php',
         'compare' => 'page-compare.php',
         'latest'  => 'page-latest.php',
     ];
-    if ( $route && isset( $map[ $route ] ) ) {
-        $file = get_template_directory() . '/' . $map[ $route ];
+
+    $path = trim( parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH ), '/' );
+
+    if ( isset( $map[ $path ] ) ) {
+        $file = get_template_directory() . '/' . $map[ $path ];
         if ( file_exists( $file ) ) {
-            return $file;
+            status_header( 200 );
+            include $file;
+            exit;
         }
     }
-    return $template;
 }
 
 add_action( 'init', 'backup_create_default_menus', 99 );
