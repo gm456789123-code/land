@@ -5,7 +5,7 @@
  */
 
 if ( is_user_logged_in() ) {
-    wp_redirect( home_url( '/my-listings/' ) );
+    wp_redirect( current_user_can( 'manage_options' ) ? admin_url() : home_url( '/my-listings/' ) );
     exit;
 }
 
@@ -25,7 +25,8 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['land_login_nonce'] 
         if ( is_wp_error( $user ) ) {
             $error = 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง';
         } else {
-            wp_redirect( home_url( '/my-listings/' ) );
+            $redirect = user_can( $user, 'manage_options' ) ? admin_url() : home_url( '/my-listings/' );
+            wp_redirect( $redirect );
             exit;
         }
     }
