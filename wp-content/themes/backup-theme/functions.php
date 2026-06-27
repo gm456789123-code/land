@@ -49,11 +49,11 @@ function backup_create_default_menus() {
         return;
     }
 
-    $menu_items = [
-        [ 'title' => 'หน้าหลัก',     'url' => home_url( '/' ) ],
-        [ 'title' => 'ค้นหาที่ดิน', 'url' => home_url( '/search/' ) ],
-        [ 'title' => 'เปรียบเทียบ', 'url' => home_url( '/compare/' ) ],
-        [ 'title' => 'ดูล่าสุด',    'url' => home_url( '/latest/' ) ],
+    $page_items = [
+        [ 'title' => 'หน้าหลัก',     'slug' => '' ],
+        [ 'title' => 'ค้นหาที่ดิน', 'slug' => 'search' ],
+        [ 'title' => 'เปรียบเทียบ', 'slug' => 'compare' ],
+        [ 'title' => 'ดูล่าสุด',    'slug' => 'latest' ],
     ];
 
     $locations = get_theme_mod( 'nav_menu_locations', [] );
@@ -67,12 +67,19 @@ function backup_create_default_menus() {
         }
 
         if ( ! $existing ) {
-            foreach ( $menu_items as $item ) {
-                wp_update_nav_menu_item( $menu_id, 0, [
+            foreach ( $page_items as $item ) {
+                $page = $item['slug'] ? get_page_by_path( $item['slug'] ) : null;
+                wp_update_nav_menu_item( $menu_id, 0, $page ? [
+                    'menu-item-title'     => $item['title'],
+                    'menu-item-object'    => 'page',
+                    'menu-item-object-id' => $page->ID,
+                    'menu-item-type'      => 'post_type',
+                    'menu-item-status'    => 'publish',
+                ] : [
                     'menu-item-title'  => $item['title'],
-                    'menu-item-url'    => $item['url'],
-                    'menu-item-status' => 'publish',
+                    'menu-item-url'    => home_url( '/' ),
                     'menu-item-type'   => 'custom',
+                    'menu-item-status' => 'publish',
                 ] );
             }
         }
@@ -93,7 +100,9 @@ class Backup_Nav_Walker extends Walker_Nav_Menu {
     public function end_lvl( &$output, $depth = 0, $args = null ) {}
 
     public function start_el( &$output, $item, $depth = 0, $args = null, $id = 0 ) {
-        $active = in_array( 'current-menu-item', $item->classes ) || in_array( 'current-page-ancestor', $item->classes );
+        $active = in_array( 'current-menu-item', $item->classes )
+               || in_array( 'current-page-ancestor', $item->classes )
+               || rtrim( $item->url, '/' ) === rtrim( home_url( $_SERVER['REQUEST_URI'] ), '/' );
         $class  = $active
             ? 'px-4 py-2 rounded-full text-white'
             : 'px-4 py-2 rounded-full text-gray-600 hover:bg-gray-100 transition-colors';
@@ -115,7 +124,9 @@ class Backup_Mobile_Walker extends Walker_Nav_Menu {
     public function end_lvl( &$output, $depth = 0, $args = null ) {}
 
     public function start_el( &$output, $item, $depth = 0, $args = null, $id = 0 ) {
-        $active = in_array( 'current-menu-item', $item->classes ) || in_array( 'current-page-ancestor', $item->classes );
+        $active = in_array( 'current-menu-item', $item->classes )
+               || in_array( 'current-page-ancestor', $item->classes )
+               || rtrim( $item->url, '/' ) === rtrim( home_url( $_SERVER['REQUEST_URI'] ), '/' );
         $class  = $active
             ? 'block px-4 py-2 rounded-full text-white text-center mb-1'
             : 'block px-4 py-2 rounded-full text-gray-600 hover:bg-gray-100 transition-colors';
