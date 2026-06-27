@@ -19,6 +19,26 @@ function backup_theme_enqueue() {
 }
 add_action( 'wp_enqueue_scripts', 'backup_theme_enqueue' );
 
+/* ============================================================
+   Custom Post Type — ประกาศขายที่ดิน
+   ============================================================ */
+add_action( 'init', 'backup_register_land_listing_cpt' );
+function backup_register_land_listing_cpt() {
+    register_post_type( 'land_listing', [
+        'labels' => [
+            'name'          => 'ประกาศที่ดิน',
+            'singular_name' => 'ประกาศที่ดิน',
+            'add_new_item'  => 'เพิ่มประกาศใหม่',
+            'edit_item'     => 'แก้ไขประกาศ',
+        ],
+        'public'       => true,
+        'show_in_menu' => true,
+        'supports'     => [ 'title', 'thumbnail', 'author' ],
+        'menu_icon'    => 'dashicons-admin-home',
+        'rewrite'      => [ 'slug' => 'listing' ],
+    ] );
+}
+
 add_action( 'after_switch_theme', 'backup_theme_activate' );
 function backup_theme_activate() {
     // Permalink
@@ -27,11 +47,16 @@ function backup_theme_activate() {
     $wp_rewrite->flush_rules();
 
     // Pages
-    foreach ( [
-        'search'  => 'ค้นหาที่ดิน',
-        'compare' => 'เปรียบเทียบ',
-        'latest'  => 'ดูล่าสุด',
-    ] as $slug => $title ) {
+    $pages = [
+        'search'       => 'ค้นหาที่ดิน',
+        'compare'      => 'เปรียบเทียบ',
+        'latest'       => 'ดูล่าสุด',
+        'login'        => 'เข้าสู่ระบบ',
+        'register'     => 'สมัครสมาชิก',
+        'post-listing' => 'ลงประกาศขายที่ดิน',
+        'my-listings'  => 'ประกาศของฉัน',
+    ];
+    foreach ( $pages as $slug => $title ) {
         if ( ! get_page_by_path( $slug ) ) {
             wp_insert_post( [
                 'post_title'  => $title,

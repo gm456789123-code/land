@@ -69,10 +69,11 @@
         TH <span class="text-xs">▾</span>
       </button>
       <?php if ( is_user_logged_in() ) : ?>
-        <a href="<?php echo esc_url( wp_logout_url( home_url( '/' ) ) ); ?>" class="hidden sm:inline-block px-4 py-2 rounded-full border border-gray-200 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors">ออกจากระบบ</a>
+        <a href="<?php echo esc_url( home_url( '/post-listing/' ) ); ?>" class="hidden sm:inline-block px-4 py-2 rounded-full border border-gray-200 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors">ลงประกาศ</a>
+        <a href="<?php echo esc_url( wp_logout_url( home_url( '/' ) ) ); ?>" class="px-4 py-2 rounded-full text-sm font-semibold text-white hover:opacity-90 transition-opacity" style="background:#1d4ed8;">ออกจากระบบ</a>
       <?php else : ?>
-        <a href="<?php echo esc_url( wp_login_url() ); ?>" class="hidden sm:inline-block px-4 py-2 rounded-full border border-gray-200 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors">เข้าสู่ระบบ</a>
-        <a href="<?php echo esc_url( wp_registration_url() ); ?>" class="px-4 py-2 rounded-full text-sm font-semibold text-white hover:opacity-90 transition-opacity" style="background:#1d4ed8;">สมัครสมาชิก</a>
+        <a href="<?php echo esc_url( home_url( '/login/' ) ); ?>" class="hidden sm:inline-block px-4 py-2 rounded-full border border-gray-200 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors">เข้าสู่ระบบ</a>
+        <a href="<?php echo esc_url( home_url( '/register/' ) ); ?>" class="px-4 py-2 rounded-full text-sm font-semibold text-white hover:opacity-90 transition-opacity" style="background:#1d4ed8;">สมัครสมาชิก</a>
       <?php endif; ?>
       <!-- Hamburger (mobile) -->
       <button id="hamburger-btn" class="lg:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors" aria-label="เปิดเมนู" aria-expanded="false" aria-controls="mobile-menu">
