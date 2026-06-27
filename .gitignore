@@ -13,8 +13,9 @@ wp-content/object-cache.php
 backup_20260625-175826/
 backup-theme/
 
-# ===== Docker secrets =====
+# ===== Environment-specific (credentials differ per server) =====
 .env
+wp-config.php
 
 # ===== OS & editor =====
 .DS_Store
