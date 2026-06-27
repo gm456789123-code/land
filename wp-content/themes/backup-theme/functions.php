@@ -60,6 +60,7 @@ function backup_ensure_pages() {
         'register'     => 'สมัครสมาชิก',
         'post-listing' => 'ลงประกาศขายที่ดิน',
         'my-listings'  => 'ประกาศของฉัน',
+        'profile'      => 'ข้อมูลส่วนตัว',
     ];
     foreach ( $pages as $slug => $title ) {
         if ( ! get_page_by_path( $slug ) ) {
@@ -170,3 +171,4 @@ class Backup_Mobile_Walker extends Walker_Nav_Menu {
         $output .= '</a>';
     }
 }
+

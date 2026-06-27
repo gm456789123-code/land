@@ -59,6 +59,26 @@ get_header();
         </div>
       <?php endif; ?>
 
+      <div class="mb-6 space-y-3">
+        <button type="button"
+                disabled
+                aria-disabled="true"
+                class="w-full flex items-center justify-center gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-gray-700 opacity-80 cursor-not-allowed">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="#EA4335" d="M12 10.2v3.9h5.4c-.2 1.3-1.7 3.9-5.4 3.9-3.2 0-5.9-2.7-5.9-6s2.7-6 5.9-6c1.8 0 3 .8 3.7 1.5l2.5-2.4C16.6 3.6 14.5 2.8 12 2.8 6.9 2.8 2.8 6.9 2.8 12S6.9 21.2 12 21.2c6.9 0 8.6-4.8 8.6-7.3 0-.5-.1-.9-.1-1.3H12z"/>
+            <path fill="#34A853" d="M3.9 7l3.2 2.3C8 7.4 9.8 6 12 6c1.8 0 3 .8 3.7 1.5l2.5-2.4C16.6 3.6 14.5 2.8 12 2.8 8.5 2.8 5.5 4.8 3.9 7z"/>
+            <path fill="#FBBC05" d="M12 21.2c2.4 0 4.5-.8 6-2.3l-2.8-2.3c-.8.6-1.8 1.1-3.2 1.1-3.6 0-5.2-2.4-5.4-3.7l-3.3 2.5c1.6 3.1 4.8 4.7 8.7 4.7z"/>
+            <path fill="#4285F4" d="M3.3 16.5l3.3-2.5c-.2-.5-.3-1.1-.3-2s.1-1.5.3-2L3.3 7.5C2.9 8.5 2.8 9.7 2.8 12s.1 3.5.5 4.5z"/>
+          </svg>
+          เข้าสู่ระบบด้วย Google
+        </button>
+        <p class="text-center text-xs text-gray-400">ฟีเจอร์นี้ต้องการการตั้งค่า Google OAuth ก่อน</p>
+        <div class="relative">
+          <div class="absolute inset-0 flex items-center"><span class="w-full border-t border-gray-100"></span></div>
+          <div class="relative flex justify-center text-xs uppercase"><span class="bg-white px-3 text-gray-400">หรือเข้าสู่ระบบด้วยอีเมล</span></div>
+        </div>
+      </div>
+
       <form method="POST" class="space-y-5">
         <?php wp_nonce_field( 'land_login', 'land_login_nonce' ); ?>
 
@@ -104,3 +124,4 @@ get_header();
 </div>
 
 <?php get_footer(); ?>
+
