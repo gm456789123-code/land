@@ -41,12 +41,17 @@ function backup_register_land_listing_cpt() {
 
 add_action( 'after_switch_theme', 'backup_theme_activate' );
 function backup_theme_activate() {
-    // Permalink
     global $wp_rewrite;
     $wp_rewrite->set_permalink_structure( '/%postname%/' );
     $wp_rewrite->flush_rules();
+    backup_ensure_pages();
+}
 
-    // Pages
+add_action( 'init', 'backup_ensure_pages', 5 );
+function backup_ensure_pages() {
+    if ( get_option( 'backup_pages_created_v2' ) ) {
+        return;
+    }
     $pages = [
         'search'       => 'ค้นหาที่ดิน',
         'compare'      => 'เปรียบเทียบ',
@@ -66,6 +71,7 @@ function backup_theme_activate() {
             ] );
         }
     }
+    update_option( 'backup_pages_created_v2', true );
 }
 
 add_action( 'init', 'backup_create_default_menus', 99 );
