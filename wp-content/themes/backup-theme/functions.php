@@ -173,6 +173,43 @@ class Backup_Mobile_Walker extends Walker_Nav_Menu {
 }
 
 /* ============================================================
+   Admin Settings — ตั้งค่าสถิติหน้าหลัก (ดีล + มูลค่า)
+   ============================================================ */
+add_action( 'admin_menu', function () {
+    add_options_page( 'ตั้งค่าสถิติ', 'สถิติเว็บ', 'manage_options', 'land-stats', 'backup_stats_settings_page' );
+} );
+
+function backup_stats_settings_page() {
+    if ( isset( $_POST['land_stats_nonce'] ) && wp_verify_nonce( $_POST['land_stats_nonce'], 'land_stats' ) && current_user_can( 'manage_options' ) ) {
+        update_option( 'land_stat_deals', (int) $_POST['deals'] );
+        update_option( 'land_stat_value', sanitize_text_field( $_POST['value'] ) );
+        echo '<div class="notice notice-success is-dismissible"><p>บันทึกเรียบร้อยแล้ว</p></div>';
+    }
+    $deals = get_option( 'land_stat_deals', 84 );
+    $value = get_option( 'land_stat_value', '42.6' );
+    ?>
+    <div class="wrap">
+      <h1>ตั้งค่าสถิติหน้าหลัก</h1>
+      <p class="description">จำนวนสมาชิกและที่ดินคำนวณอัตโนมัติ — ตั้งค่าเฉพาะดีลและมูลค่าที่นี่</p>
+      <form method="POST" style="max-width:400px;margin-top:20px;">
+        <?php wp_nonce_field( 'land_stats', 'land_stats_nonce' ); ?>
+        <table class="form-table">
+          <tr>
+            <th><label for="deals">จำนวนดีลที่ปิดแล้ว</label></th>
+            <td><input type="number" id="deals" name="deals" value="<?php echo esc_attr( $deals ); ?>" class="regular-text"> ดีล</td>
+          </tr>
+          <tr>
+            <th><label for="value">มูลค่าดีลรวม (ล้านบาท)</label></th>
+            <td><input type="text" id="value" name="value" value="<?php echo esc_attr( $value ); ?>" class="regular-text"> ล้านบาท</td>
+          </tr>
+        </table>
+        <?php submit_button( 'บันทึก' ); ?>
+      </form>
+    </div>
+    <?php
+}
+
+/* ============================================================
    Hide WordPress — ซ่อน wp-login.php / wp-admin จากคนอื่น
    ============================================================ */
 

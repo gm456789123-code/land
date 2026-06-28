@@ -59,12 +59,30 @@
 </section>
 
 <!-- ===== STATS BAR ===== -->
+<?php
+$stat_members  = count_users()['total_users'];
+$stat_listings = wp_count_posts( 'land_listing' )->publish ?? 0;
+$stat_deals    = (int) get_option( 'land_stat_deals', 84 );
+$stat_value    = get_option( 'land_stat_value', '42.6' );
+?>
 <section class="max-w-7xl mx-auto px-4 lg:px-8 mt-6">
   <div class="stat-gradient rounded-2xl text-white grid grid-cols-2 md:grid-cols-4 divide-x divide-white/20 overflow-hidden">
-    <div class="p-6"><p class="text-3xl font-extrabold">4,328+ <span class="text-base font-semibold">คน</span></p><p class="text-sm text-white/80 mt-1">สมาชิกในเครือข่าย เติบโตต่อเนื่อง</p></div>
-    <div class="p-6"><p class="text-3xl font-extrabold">1,290+ <span class="text-base font-semibold">แปลง</span></p><p class="text-sm text-white/80 mt-1">ที่ดินในระบบ อัปเดตทุกวัน</p></div>
-    <div class="p-6"><p class="text-3xl font-extrabold">84+ <span class="text-base font-semibold">ดีล</span></p><p class="text-sm text-white/80 mt-1">ดีลที่จับคู่แล้ว จ่ายจริงต่อเนื่อง</p></div>
-    <div class="p-6"><p class="text-3xl font-extrabold">42.6 <span class="text-base font-semibold">ล้านบาท</span></p><p class="text-sm text-white/80 mt-1">มูลค่าดีลรวมของผู้แนะนำ</p></div>
+    <div class="p-6">
+      <p class="text-3xl font-extrabold"><?php echo number_format( $stat_members ); ?>+ <span class="text-base font-semibold">คน</span></p>
+      <p class="text-sm text-white/80 mt-1">สมาชิกในเครือข่าย เติบโตต่อเนื่อง</p>
+    </div>
+    <div class="p-6">
+      <p class="text-3xl font-extrabold"><?php echo number_format( $stat_listings ); ?>+ <span class="text-base font-semibold">แปลง</span></p>
+      <p class="text-sm text-white/80 mt-1">ที่ดินในระบบ อัปเดตทุกวัน</p>
+    </div>
+    <div class="p-6">
+      <p class="text-3xl font-extrabold"><?php echo number_format( $stat_deals ); ?>+ <span class="text-base font-semibold">ดีล</span></p>
+      <p class="text-sm text-white/80 mt-1">ดีลที่จับคู่แล้ว จ่ายจริงต่อเนื่อง</p>
+    </div>
+    <div class="p-6">
+      <p class="text-3xl font-extrabold"><?php echo esc_html( $stat_value ); ?> <span class="text-base font-semibold">ล้านบาท</span></p>
+      <p class="text-sm text-white/80 mt-1">มูลค่าดีลรวมของผู้แนะนำ</p>
+    </div>
   </div>
 </section>
 
