@@ -180,24 +180,22 @@ class Backup_Mobile_Walker extends Walker_Nav_Menu {
 add_filter( 'login_url',    fn( $url ) => home_url( '/login/' ),    10, 3 );
 add_filter( 'register_url', fn()       => home_url( '/register/' )          );
 
-// redirect wp-login.php (login/register action) → หน้าของเรา
-// action อื่น เช่น rp (reset password), logout ให้ WP จัดการตามปกติ
+// wp-login.php: ให้ 404 ยกเว้น logout / reset password
 add_action( 'login_init', function () {
-    $action = $_REQUEST['action'] ?? 'login';
-    if ( $action === 'login' && $_SERVER['REQUEST_METHOD'] !== 'POST' ) {
-        wp_redirect( home_url( '/login/' ) );
-        exit;
-    }
-    if ( $action === 'register' ) {
-        wp_redirect( home_url( '/register/' ) );
+    $action  = $_REQUEST['action'] ?? 'login';
+    $allowed = [ 'logout', 'rp', 'resetpass', 'postpass', 'lostpassword' ];
+    if ( ! in_array( $action, $allowed, true ) ) {
+        status_header( 404 );
+        nocache_headers();
         exit;
     }
 } );
 
-// คนที่ไม่ได้ login พยายามเข้า /wp-admin/ → redirect ไป /login/
+// /wp-admin/ สำหรับคนที่ไม่ได้ login → 404
 add_action( 'admin_init', function () {
     if ( ! is_user_logged_in() && ! wp_doing_ajax() ) {
-        wp_redirect( home_url( '/login/' ) );
+        status_header( 404 );
+        nocache_headers();
         exit;
     }
 } );
