@@ -172,3 +172,33 @@ class Backup_Mobile_Walker extends Walker_Nav_Menu {
     }
 }
 
+/* ============================================================
+   Hide WordPress — ซ่อน wp-login.php / wp-admin จากคนอื่น
+   ============================================================ */
+
+// ชี้ login/register URL ในระบบ WP ไปหน้าของเรา
+add_filter( 'login_url',    fn( $url ) => home_url( '/login/' ),    10, 3 );
+add_filter( 'register_url', fn()       => home_url( '/register/' )          );
+
+// redirect wp-login.php (login/register action) → หน้าของเรา
+// action อื่น เช่น rp (reset password), logout ให้ WP จัดการตามปกติ
+add_action( 'login_init', function () {
+    $action = $_REQUEST['action'] ?? 'login';
+    if ( $action === 'login' && $_SERVER['REQUEST_METHOD'] !== 'POST' ) {
+        wp_redirect( home_url( '/login/' ) );
+        exit;
+    }
+    if ( $action === 'register' ) {
+        wp_redirect( home_url( '/register/' ) );
+        exit;
+    }
+} );
+
+// คนที่ไม่ได้ login พยายามเข้า /wp-admin/ → redirect ไป /login/
+add_action( 'admin_init', function () {
+    if ( ! is_user_logged_in() && ! wp_doing_ajax() ) {
+        wp_redirect( home_url( '/login/' ) );
+        exit;
+    }
+} );
+
