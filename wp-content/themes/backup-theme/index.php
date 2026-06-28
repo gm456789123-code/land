@@ -87,25 +87,69 @@ $stat_value    = get_option( 'land_stat_value', '42.6' );
 </section>
 
 <!-- ===== FEATURED PROPERTIES ===== -->
+<?php
+$featured = get_posts( [
+    'post_type'      => 'land_listing',
+    'post_status'    => 'publish',
+    'posts_per_page' => 3,
+    'orderby'        => 'date',
+    'order'          => 'DESC',
+] );
+?>
 <section class="max-w-7xl mx-auto px-4 lg:px-8 mt-12">
   <div class="flex items-center justify-between mb-5">
     <h2 class="text-2xl font-extrabold" style="color:#13357a;">ที่ดินแนะนำ อัปเดตทุกวัน</h2>
     <a href="<?php echo esc_url( home_url( '/latest/' ) ); ?>" class="text-sm font-semibold hover:underline" style="color:#1d4ed8;">ดูทั้งหมด →</a>
   </div>
+
+  <?php if ( $featured ) : ?>
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <?php foreach ( $featured as $p ) :
+      $province = get_post_meta( $p->ID, '_land_province', true );
+      $price    = get_post_meta( $p->ID, '_land_price',    true );
+      $type     = get_post_meta( $p->ID, '_land_type',     true );
+      $size     = get_post_meta( $p->ID, '_land_size',     true );
+      $thumb    = get_the_post_thumbnail_url( $p->ID, 'large' );
+      $url      = get_permalink( $p->ID );
+    ?>
     <article class="rounded-2xl overflow-hidden bg-white shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-      <div class="relative h-44"><img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&h=400&fit=crop&auto=format" class="w-full h-full object-cover" alt="ที่ดิน เชียงใหม่" loading="lazy"><span class="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-bold text-white" style="background:#1aa260;">Chiang Mai</span></div>
-      <div class="p-4"><p class="text-xs text-gray-400">ค่าคอมสูงสุด</p><p class="text-2xl font-extrabold" style="color:#1d4ed8;">2.4 <span class="text-base">ล้านบาท</span></p><p class="font-semibold mt-2">Townhome in Chiang Mai</p></div>
+      <a href="<?php echo esc_url( $url ); ?>" class="block">
+        <div class="relative h-44 bg-gray-100">
+          <?php if ( $thumb ) : ?>
+            <img src="<?php echo esc_url( $thumb ); ?>" class="w-full h-full object-cover" alt="<?php echo esc_attr( $p->post_title ); ?>" loading="lazy">
+          <?php else : ?>
+            <div class="w-full h-full flex items-center justify-center">
+              <svg class="w-10 h-10 text-gray-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+            </div>
+          <?php endif; ?>
+          <?php if ( $province ) : ?>
+            <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-bold text-white" style="background:#1aa260;"><?php echo esc_html( $province ); ?></span>
+          <?php endif; ?>
+        </div>
+        <div class="p-4">
+          <?php if ( $price ) : ?>
+            <p class="text-xs text-gray-400">ราคาขาย</p>
+            <p class="text-2xl font-extrabold" style="color:#1d4ed8;">฿<?php echo number_format( $price ); ?></p>
+          <?php endif; ?>
+          <p class="font-semibold mt-2 text-gray-800 line-clamp-1"><?php echo esc_html( $p->post_title ); ?></p>
+          <div class="flex flex-wrap gap-2 mt-2">
+            <?php if ( $type ) echo '<span class="text-xs px-2 py-0.5 rounded-full bg-blue-50 text-blue-700">' . esc_html( $type ) . '</span>'; ?>
+            <?php if ( $size ) echo '<span class="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">' . esc_html( $size ) . '</span>'; ?>
+          </div>
+        </div>
+      </a>
     </article>
-    <article class="rounded-2xl overflow-hidden bg-white shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-      <div class="relative h-44"><img src="https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=600&h=400&fit=crop&auto=format" class="w-full h-full object-cover" alt="ที่ดิน กรุงเทพ" loading="lazy"><span class="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-bold text-white" style="background:#1aa260;">Bangkok</span></div>
-      <div class="p-4"><p class="text-xs text-gray-400">ค่าคอมสูงสุด</p><p class="text-2xl font-extrabold" style="color:#1d4ed8;">850,000 <span class="text-base">บาท</span></p><p class="font-semibold mt-2">Office Unit for Rent</p></div>
-    </article>
-    <article class="rounded-2xl overflow-hidden bg-white shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-      <div class="relative h-44"><img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&h=400&fit=crop&auto=format" class="w-full h-full object-cover" alt="ที่ดิน ภูเก็ต" loading="lazy"><span class="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-bold text-white" style="background:#1aa260;">Phuket</span></div>
-      <div class="p-4"><p class="text-xs text-gray-400">ค่าคอมสูงสุด</p><p class="text-2xl font-extrabold" style="color:#1d4ed8;">4 <span class="text-base">ล้านบาท</span></p><p class="font-semibold mt-2">Pool Villa Phuket Seaview</p></div>
-    </article>
+    <?php endforeach; ?>
   </div>
+
+  <?php else : ?>
+  <div class="text-center py-16 bg-white rounded-2xl border border-dashed border-gray-200">
+    <p class="text-gray-400 text-sm">ยังไม่มีประกาศที่ดิน</p>
+    <a href="<?php echo esc_url( home_url( '/post-listing/' ) ); ?>"
+       class="inline-block mt-3 px-5 py-2.5 rounded-xl text-sm font-bold text-white hover:opacity-90 transition-opacity"
+       style="background:#1d4ed8;">เป็นคนแรกที่ลงประกาศ</a>
+  </div>
+  <?php endif; ?>
 </section>
 
 <!-- ===== STEPS + WHO ===== -->
@@ -144,7 +188,7 @@ $stat_value    = get_option( 'land_stat_value', '42.6' );
     <div class="bg-yellow-50 border border-yellow-100 rounded-xl p-4"><p class="text-xs font-semibold mb-2" style="color:#1d4ed8;">● อยุธยา</p><p class="text-sm">ต้องการที่ดิน 100+ ไร่ ใกล้นิคมบางปะอินสำหรับโรงงาน</p><p class="text-xs text-gray-400 mt-3">อัปเดต 1 วัน ที่แล้ว</p></div>
     <div class="rounded-xl p-5 text-white flex flex-col justify-between" style="background:#13357a;">
       <div><p class="font-extrabold text-lg leading-snug">ส่งที่ดินของคุณ</p><p class="text-xs text-blue-100 mt-2">ให้ตรงกับความต้องการ เพื่อโอกาสปิดดีลไว</p></div>
-      <a href="<?php echo esc_url( home_url( '/search/' ) ); ?>" class="mt-4 block w-full py-2 rounded-lg font-semibold text-sm text-center text-white hover:opacity-90 transition-opacity" style="background:#1aa260;">ส่งข้อมูลที่ดินเลย</a>
+      <a href="<?php echo esc_url( is_user_logged_in() ? home_url( '/post-listing/' ) : home_url( '/register/' ) ); ?>" class="mt-4 block w-full py-2 rounded-lg font-semibold text-sm text-center text-white hover:opacity-90 transition-opacity" style="background:#1aa260;">ส่งข้อมูลที่ดินเลย</a>
     </div>
   </div>
 </section>
@@ -193,9 +237,15 @@ $stat_value    = get_option( 'land_stat_value', '42.6' );
       <p class="text-sm text-blue-100 mt-1">มาร่วมสร้างรายได้ไปกับตลาดที่ดินไทย.com</p>
     </div>
     <div class="flex items-center gap-5 shrink-0">
-      <a href="<?php echo esc_url( wp_registration_url() ); ?>" class="px-6 py-3 rounded-lg font-bold text-white text-center hover:opacity-90 transition-opacity" style="background:#1aa260;">
-        เข้าร่วมฟรีทันที<br><span class="text-xs font-normal">ไม่มีค่าใช้จ่าย</span>
-      </a>
+      <?php if ( is_user_logged_in() ) : ?>
+        <a href="<?php echo esc_url( home_url( '/post-listing/' ) ); ?>" class="px-6 py-3 rounded-lg font-bold text-white text-center hover:opacity-90 transition-opacity" style="background:#1aa260;">
+          ลงประกาศเลย<br><span class="text-xs font-normal">ฟรีไม่มีค่าใช้จ่าย</span>
+        </a>
+      <?php else : ?>
+        <a href="<?php echo esc_url( home_url( '/register/' ) ); ?>" class="px-6 py-3 rounded-lg font-bold text-white text-center hover:opacity-90 transition-opacity" style="background:#1aa260;">
+          เข้าร่วมฟรีทันที<br><span class="text-xs font-normal">ไม่มีค่าใช้จ่าย</span>
+        </a>
+      <?php endif; ?>
       <div class="hidden sm:flex items-center gap-3">
         <div class="bg-white rounded-lg p-2 w-16 h-16 flex items-center justify-center">
           <svg viewBox="0 0 21 21" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="QR Code LINE">
