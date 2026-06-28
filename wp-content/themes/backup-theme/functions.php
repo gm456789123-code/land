@@ -191,12 +191,12 @@ add_action( 'login_init', function () {
     }
 } );
 
-// /wp-admin/ สำหรับคนที่ไม่ได้ login → 404
-add_action( 'admin_init', function () {
-    if ( ! is_user_logged_in() && ! wp_doing_ajax() ) {
+// /wp-admin/ สำหรับคนที่ไม่ได้ login → 404 (ต้องใช้ init ไม่ใช่ admin_init เพราะ auth_redirect() ยิงก่อน)
+add_action( 'init', function () {
+    if ( is_admin() && ! wp_doing_ajax() && ! is_user_logged_in() ) {
         status_header( 404 );
         nocache_headers();
         exit;
     }
-} );
+}, 1 );
 
